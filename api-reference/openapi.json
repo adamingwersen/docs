@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "OpenAPI Statista Spec",
+    "description": "First stab at reverse engineering Statista's OpenAPI spec",
     "license": {
       "name": "MIT"
     },
@@ -10,23 +10,40 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.statista.ai/v1"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "apiKeyAuth": []
     }
   ],
   "paths": {
-    "/plants": {
+    "/statistics": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "description": "Returns 10 statistics at a time with some data",
         "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "A simple search query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "description": "The platform/language the content shall be retrieved from.",
+            "schema": {
+              "type": "string",
+              "enum": ["en", "de", "fr"]
+            }
+          },
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "The number of results to return (max 10)",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -35,13 +52,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "list-statistics response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "$ref": "#/components/schemas/Statistics"
                   }
                 }
               }
@@ -58,121 +75,157 @@
             }
           }
         }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "Statistics": {
+        "required": ["name"],
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "identifier": {
+            "type": "integer",
+            "description": "The unique id"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "title": {
+            "type": "string",
+            "description": "The title"
+          },
+          "link": {
+            "type": "string",
+            "description": "The URL, with a mandatory parameter `utm_source` at the end. Callers must append `utm_term` as `&utm_term=<keyword>`."
+          },
+          "subject": {
+            "type": "string",
+            "description": "The subtitle or secondary title"
+          },
+          "is_premium": {
+            "type": "boolean",
+            "description": "Indicates whether this is paid content or not"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["de", "en", "fr", "es"],
+            "description": "The language from which the content is retrieved"
+          },
+          "description": {
+            "type": "string",
+            "description": "The detailed description"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "The URL to download the actual image"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date associated with the resource"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceObject"
+            },
+            "description": "Array of sources"
+          },
+          "industries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndustryObject"
+            },
+            "description": "Array of industries"
+          },
+          "geolocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeolocationObject"
+            },
+            "description": "Array of geolocation IDs"
+          },
+          "pdf_file": {
+            "type": "string",
+            "description": "The URL to download the PDF"
+          },
+          "xls_file": {
+            "type": "string",
+            "description": "The URL to download the Excel file"
+          },
+          "teaser_image_urls": {
+            "type": "object",
+            "$ref": "#/components/schemas/TeaserImage",
+            "description": "Teaser image URLs"
+          },
+          "publishers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceObject"
+            },
+            "description": "The publishers associated with the statistic"
+          },
+          "chargers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceObject"
+            },
+            "description": "Entities responsible for charging fees related to the statistic"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+      "SourceObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the source"
           }
-        ]
+        }
+      },
+      "IndustryObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique id of the industry"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the industry"
+          }
+        }
+      },
+      "GeolocationObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique id of the geolocation"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the geolocation"
+          }
+        }
+      },
+      "TeaserImage": {
+        "type": "object",
+        "properties": {
+          "small": {
+            "type": "string",
+            "description": "URL for the small teaser image"
+          },
+          "medium": {
+            "type": "string",
+            "description": "URL for the medium teaser image"
+          },
+          "large": {
+            "type": "string",
+            "description": "URL for the large teaser image"
+          }
+        }
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+        "required": ["error", "message"],
         "type": "object",
         "properties": {
           "error": {
@@ -186,9 +239,10 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x_api_key"
       }
     }
   }

@@ -1,33 +1,63 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "How to get the most out of the Statista API"
 ---
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+  The Statista API documentation is still under development. If you have
+  questions or suggestions on how to improve the API or this documentation,
+  please contact us at{" "}
+  <a href="mailto:nina@statista.com">api.support@statista.com</a>
 </Note>
 
-## Welcome
+## Overview
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+The Statista API allows you to find Statista content programatically.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints are authenticated using the x-api-key tokens.
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+"x-api-key": <YOUR_API_KEY>
 ```
+
+## Endpoints
+
+Statista discerns between 4 core concepts that result in 4 separate endpoints:
+
+### list-statistics (I used ChatGPT - please fix)
+
+Statista's statistics resource offers a vast collection of data points across a wide
+range of industries, regions, and topics. This data is curated from official sources,
+including government agencies, companies, and research organizations.
+
+Developers can access and integrate real-time or historical data into their applications via a robust
+API. The statistics API allows for fine-tuned queries, making it easy to retrieve
+specific metrics like revenue, market size, or consumer behavior trends. The data is
+structured to ensure compatibility with both frontend dashboards and backend systems,
+ideal for generating reports, visualizations, or data-driven features.
+
+### list-marketinsights (I used ChatGPT - please fix)
+
+The market insights resource provides detailed reports and forecasts for industries and
+markets globally, with granular insights into key trends, growth drivers, and competitive
+landscapes. These insights can be accessed via API endpoints, enabling developers to
+seamlessly integrate this information into business intelligence tools, e-commerce
+platforms, or financial models.
+
+Each API call returns data such as market volumes, user demographics, or sales channels, making it simple to stay ahead of emerging trends and adjust business strategies accordingly. The resource is particularly useful for developing forward-looking applications or services that rely on market analysis.
+
+### list-studies (I used ChatGPT - please fix)
+
+Statista’s studies resource offers comprehensive research reports, covering in-depth
+analyses on industries, products, and geographic markets.
+
+Developers can tap into this resource through an API, fetching detailed study documents or summaries that can be embedded into data-heavy applications. This includes access to qualitative insights, survey results, and expert opinions, which are essential for creating context-rich reports or decision-making tools. The API supports advanced filtering options, allowing for easy retrieval of relevant studies based on criteria like industry, region, or publication year, making it a powerful tool for research-heavy platforms.
+
+### list-infographics (I used ChatGPT - please fix)
+
+Statista’s infographics resource provides visually engaging data representations across
+diverse subjects.
+
+The API allows developers to fetch ready-made infographics that cover a variety of topics such as consumer behavior, global events, or technology trends. Infographics are designed for easy embedding in websites or mobile apps, making it simple to enrich content with visual data. Developers can also pull metadata such as publication dates, sources, and categories for programmatic handling. This resource is excellent for projects where data visualization is key, helping end users quickly grasp complex information in an intuitive format.
