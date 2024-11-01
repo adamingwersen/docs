@@ -18,7 +18,11 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:adam.ingwersen.ext@statista.com"
+      "url": "mailto:apiteam@statista.com"
+    },
+    {
+      "name": "Feedback",
+      "url": "https://forms.office.com/e/DrDM0dWFKU"
     }
   ],
   "topbarCtaButton": {
@@ -27,29 +31,67 @@
   },
   "tabs": [
     {
+      "name": "Get Started",
+      "url": "start"
+    },
+    {
       "name": "API Reference",
       "url": "api-reference"
-    }
-  ],
-  "anchors": [
+    },
     {
-      "name": "Get Started",
-      "icon": "play",
-      "url": "introduction"
+      "name": "Use Cases",
+      "url": "use-cases"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "authentication", "making-your-first-query"]
+      "pages": ["start/introduction", "start/authentication"]
     },
     {
-      "group": "API Documentation",
+      "group": "API Reference",
       "pages": ["api-reference/introduction"]
     },
     {
-      "group": "Endpoint Examples",
-      "pages": ["api-reference/endpoint/get-statistics"]
+      "group": "Use Cases",
+      "pages": [
+        "use-cases/llm-answer-generation",
+        "use-cases/federated-search",
+        "use-cases/subscribe-to-data"
+      ]
+    },
+    {
+      "group": "API Packages",
+      "pages": [
+        "api-reference/discovery-starter/product-description",
+        "api-reference/discovery-advanced/product-description",
+        "api-reference/research-ai/product-description"
+      ]
+    },
+    {
+      "group": "Discovery Starter Playground",
+      "pages": [
+        "api-reference/discovery-starter/get-statistics",
+        "api-reference/discovery-starter/get-infographics",
+        "api-reference/discovery-starter/get-studies",
+        "api-reference/discovery-starter/get-marketInsights"
+      ]
+    },
+    {
+      "group": "Discovery Advanced Playground",
+      "pages": [
+        "api-reference/discovery-advanced/get-statistics",
+        "api-reference/discovery-advanced/get-infographics",
+        "api-reference/discovery-advanced/get-studies",
+        "api-reference/discovery-advanced/get-marketInsights"
+      ]
+    },
+    {
+      "group": "Research AI Playground",
+      "pages": [
+        "api-reference/research-ai/post-researchAi",
+        "api-reference/research-ai/get-researchAi"
+      ]
     }
   ],
   "footerSocials": {
